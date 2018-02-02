@@ -1,0 +1,31 @@
+Failures:
+
+  1) First Title Generation Self Check without removing stop words Only A Named titles Starting with word 'happy'
+     Failure/Error: expect(create_title 'happy').to eq('happy now the world of the world of the world of the world of the world of the world of the')
+
+     NoMethodError:
+       undefined method `create_title' for #<RSpec::ExampleGroups::FirstTitleGenerationSelfCheckWithoutRemovingStopWords::OnlyANamedTitles:0x000000000510d0d8>
+     # ./spec/self_check_3_spec.rb:8:in `block (3 levels) in <top (required)>'
+
+  2) First Title Generation Self Check without removing stop words Only A Named titles Starting with word 'sad'
+     Failure/Error: expect(create_title 'sad').to eq('sad love song for you ready for you ready for you ready for you ready for you ready for you ready')
+
+     NoMethodError:
+       undefined method `create_title' for #<RSpec::ExampleGroups::FirstTitleGenerationSelfCheckWithoutRemovingStopWords::OnlyANamedTitles:0x0000000005107a98>
+     # ./spec/self_check_3_spec.rb:12:in `block (3 levels) in <top (required)>'
+
+  3) First Title Generation Self Check without removing stop words Only A Named titles Starting with word 'computer'
+     Failure/Error: expect(create_title 'computer').to eq('computer')
+
+     NoMethodError:
+       undefined method `create_title' for #<RSpec::ExampleGroups::FirstTitleGenerationSelfCheckWithoutRemovingStopWords::OnlyANamedTitles:0x0000000005106170>
+     # ./spec/self_check_3_spec.rb:16:in `block (3 levels) in <top (required)>'
+
+Finished in 0.00713 seconds (files took 0.77432 seconds to load)
+3 examples, 3 failures
+
+Failed examples:
+
+rspec ./spec/self_check_3_spec.rb:7 # First Title Generation Self Check without removing stop words Only A Named titles Starting with word 'happy'
+rspec ./spec/self_check_3_spec.rb:11 # First Title Generation Self Check without removing stop words Only A Named titles Starting with word 'sad'
+rspec ./spec/self_check_3_spec.rb:15 # First Title Generation Self Check without removing stop words Only A Named titles Starting with word 'computer'
