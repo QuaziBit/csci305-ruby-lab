@@ -25,6 +25,9 @@ def process_file(file_name)
 
 	puts "Processing File.... "
 	
+	# Test: write to text file all titles
+	# tmp_line_out = ""
+
 	begin
 		IO.foreach(file_name) do |line|
 			# do something for each line
@@ -35,6 +38,11 @@ def process_file(file_name)
 			# title = cleanup_title(line)
 			cleanup_title(line)
 
+			# Test: write to text file all titles
+			#if title != nil
+			#	tmp_line_out += "#{title}\n"
+			#end	
+		
 		end
 
 		puts "Finished. Bigram model built.\n"
@@ -50,6 +58,9 @@ def process_file(file_name)
 
 		# print computing time
 		puts "Computing Time: #{t_3}"
+
+		# Test: write to text file all titles
+		# File.open("text.txt", 'w') { |file| file.write(tmp_line_out) }
 
 	rescue
 		STDERR.puts "Could not open file"
@@ -98,7 +109,7 @@ def cleanup_title(line)
 
 			if title_tmp_2 != ""
 				$counter_1 += 1
-				title = title_tmp_2.downcase!
+				title = title_tmp_2
 				#puts "*********************\n"
 				#puts "[ENG][+]: #{title_tmp_2} ==> #{$counter_1}"
 				#puts "*********************\n"
@@ -114,10 +125,6 @@ def cleanup_title(line)
 
 	# return cleaned up title string
 	return title;
-
-end
-
-def mcw()
 
 end
 
