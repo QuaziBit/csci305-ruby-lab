@@ -149,20 +149,9 @@ def createWordsList(title)
 end
 
 def printWords()
-
-	'
-	#$titles.sort_by { |k,v| k.to_s }
-	$titles.each do |key, array|
-        puts "key: [#{key}] ----- val: #{array}"
-	end
-	'
-	
-	
-    #$words.sort_by { |k,v| k.to_s }
     $words.each do |key, array|
         puts "key: [#{key}] ----- val: #{array}"
 	end
-	
 end
 
 def buildBigram(title)
@@ -246,10 +235,6 @@ def mcw(some_word)
 
 	$bigrams.each do |key, array|
 		if ( array.match("#{some_word}") )
-			#puts array
-			#puts array.chomp.split(":#{some_word}")
-			#puts array.split(/[\:\,]/)
-
 			tmp_array = array.split(/[\:\,]/)
 			puts tmp_array
 			puts "\n"
@@ -264,18 +249,12 @@ def mcw(some_word)
 				end
 				counter += 1
 			end
-			'
-			for word in tmp_array
-				if word == some_word
-					str = tmp_array[some_word_index - 1]
-					puts "#{str}: #{some_word}"
-				end
-			end
-			'
+
 			puts tmp_str
 			puts "************************************"
 			counter = 0
-			some_word_index = 0
+            some_word_index = 0
+            
 		end
 		tmp_str = ""
 	end
