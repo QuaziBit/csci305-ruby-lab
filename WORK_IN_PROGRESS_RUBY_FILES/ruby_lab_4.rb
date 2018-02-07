@@ -83,9 +83,10 @@ def process_file(file_name)
 		#countWords()
 
 		#printWords()
-		#printBigram()
+		printBigram()
+		#printTitles()
 
-		mcw("computer")
+		#mcw("computer")
 
 
 	rescue
@@ -113,15 +114,40 @@ def cleanup_title(line)
 	# ===============================================================
 
 	if title_tmp.match(/^[\A]/)
-        $counter_1 += 1
+
 		# splitting up the title_tmp further
 		# after splitting the first part of the title_tmp string should give back title
 		# and the rest what left is the garbage string
 		title_tmp_2, garbage = title_tmp.chomp.split(/[\/\()\[\]\:\_\-\+\=\*\@\![0-9]]/)
 
-		title = title_tmp_2.downcase!.gsub(/\s+$/,'')
-		title = title.gsub(/\.$/,'')
-
+		# ===============================================================
+		# Replace spaces within an empty char
+		str_no_sp = title_tmp_2.gsub(/\s/,'')
+		str_no_sp = str_no_sp.gsub(/\?/,'')
+		str_no_sp = str_no_sp.gsub(/\!/,'')
+		str_no_sp = str_no_sp.gsub(/\./,'')
+		str_no_sp = str_no_sp.gsub(/\'/,'')
+		
+		# check if title matches the regular expression
+		reg_str = str_no_sp[/[a-zA-Z]+$/]
+		is_equal = str_no_sp == reg_str # true or false
+		# ================================================================
+		
+		if is_equal == true
+			if title_tmp_2 != ""
+				$counter_1 += 1
+				title = title_tmp_2.downcase!.gsub(/\s+$/,'')
+				title = title.gsub(/\.$/,'')
+				#puts "*********************\n"
+				#puts "[ENG][+]: #{title} ==> #{$counter_1}"
+				#puts "*********************\n"
+			end	
+		else
+			$counter_2 += 1
+			#puts "*********************\n"
+			#puts "[NON-ENG][-]: #{title_tmp_2} ==> #{$counter_1}"
+			#puts "*********************\n"
+		end
 	end
 
 	# return cleaned up title string
@@ -132,24 +158,26 @@ end
 def createWordsList(title)
 
 	# add single title into Hash
-	# $titles[title] = ""
+	#$titles[title] = ""
 
     # split string into the words
     tmp = title.split(" ")
 
-    #puts "====================\n"
     tmp.each do |word|
         # add simgle word into Hash
         $words[word] = 0
     end
-    #puts "====================\n"
-    
-    #$words[title] = title
 
 end
 
 def printWords()
     $words.each do |key, array|
+        puts "key: [#{key}] ----- val: #{array}"
+	end
+end
+
+def printTitles()
+    $titles.each do |key, array|
         puts "key: [#{key}] ----- val: #{array}"
 	end
 end
@@ -208,6 +236,39 @@ def printBigram()
 	puts "\n"
 end
 
+def mcw(some_word)
+
+	counter = 0
+	some_word_index = 0
+	tmp_str = ""
+
+	$bigrams.each do |key, array|
+		if ( array.match("#{some_word}") )
+			tmp_array = array.split(/[\:\,]/)
+			#puts tmp_array
+			#puts "\n"
+			for word in tmp_array
+				if some_word.match("#{word}")
+					some_word_index = counter
+
+					if counter != 0 && counter <= tmp_array.length
+						tmp_str += tmp_array[counter - 1]
+						tmp_str += ":#{some_word}\n"
+					end
+				end
+				counter += 1
+			end
+
+			puts tmp_str
+			#puts "************************************"
+			counter = 0
+            some_word_index = 0
+            
+		end
+		tmp_str = ""
+	end
+end
+
 def countWords()
 	
 	'
@@ -223,41 +284,6 @@ def countWords()
 		end
 	end
 	'
-
-end
-
-def mcw(some_word)
-
-	# .chomp.split(/[\/\()\[\]\:\_\-\+\=\*\@\![0-9]]/)
-	counter = 0
-	some_word_index = 0
-	tmp_str = ""
-
-	$bigrams.each do |key, array|
-		if ( array.match("#{some_word}") )
-			tmp_array = array.split(/[\:\,]/)
-			puts tmp_array
-			puts "\n"
-			for word in tmp_array
-				if some_word.match("#{word}")
-					some_word_index = counter
-
-					if counter != 0 && counter <= tmp_array.length
-						tmp_str += tmp_array[counter - 1]
-						tmp_str += ":#{some_word}\n"
-					end
-				end
-				counter += 1
-			end
-
-			puts tmp_str
-			puts "************************************"
-			counter = 0
-            some_word_index = 0
-            
-		end
-		tmp_str = ""
-	end
 end
 
 # Executes the program
