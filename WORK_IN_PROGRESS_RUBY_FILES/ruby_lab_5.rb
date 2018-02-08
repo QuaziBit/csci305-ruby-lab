@@ -69,11 +69,18 @@ def process_file(file_name)
         puts "=======================================\n\n"
         
 		#countWords()
-		#printWords()
-		#printBigram()
+        #printWords()
+        
+        '
+        puts "Printing Bigram data..."
+        puts "=================================================="
+        printBigram()
+        puts "==================================================\n"
+        '
+        
 		#printTitles()
 
-		mcw("love")
+		mcw("computer")
 
 
 	rescue
@@ -220,12 +227,12 @@ def printBigram()
     $bigrams.each do |key, array|
         puts "key: [#{key}] ----- val: #{array}"
 	end
-	puts "\n"
 end
 
 def mcw(some_word)
 
-	tmp_hash = Hash.new
+    tmp_hash = Hash.new
+    words_list = Array.new
 
 	counter = 0
 	followed = ""
@@ -244,11 +251,13 @@ def mcw(some_word)
 							if tmp_array[counter - 1] != some_word
 
 								followed = tmp_array[counter - 1]
-								#tmp_hash["#{followed}"] = 0
-								puts "word: [#{some_word}] following: [#{followed}]"
-
+                                tmp_hash[followed] = 0
+                                words_list.push(followed)
+                                #puts "word: [#{some_word}] following: [#{followed}]"
+                                
 							end
-						end
+                        end
+                        #followed = ""
 
 					end
 
@@ -259,7 +268,38 @@ def mcw(some_word)
 			counter = 0
 
 		end
+    end
+    
+    tmp_hash.each do |key, array|
+        for word in words_list
+            if word == key
+                tmp_hash["#{key}"] += 1
+            end
+        end
+    end
+
+    val_1 = -1
+	val_2 = -2
+	tmp_hash.keys.each_with_index do |key, index|
+		val_1 = tmp_hash["#{key}"]
+		if val_1 > 0
+			if val_2 < val_1
+				val_2 = val_1
+			end
+		end
+		val_1 = -1
 	end
+
+    '
+    tmp_hash.each do |key, array|
+        if array == val_2
+            puts "key: [#{key}] ----- val: #{array}"
+        end
+    end
+    '
+
+	followed = tmp_hash.key(val_2)
+	puts "word: [#{some_word}] followed word: [#{followed}] [#{val_2}] times"
 
 end
 
