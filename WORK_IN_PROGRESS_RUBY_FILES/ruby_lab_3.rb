@@ -118,11 +118,14 @@ def cleanup_title(line)
 		# ===============================================================
 		# Replace spaces within an empty char
 		str_no_sp = title_tmp_2.gsub(/\s/,'')
+		
 		"
 		str_no_sp = str_no_sp.gsub(/\?/,'')
 		str_no_sp = str_no_sp.gsub(/\!/,'')
 		str_no_sp = str_no_sp.gsub(/\./,'')
+		str_no_sp = str_no_sp.gsub(/\'/,'')
 		"
+		
 
 		# check if title matches the regular expression
 		reg_str = str_no_sp[/[a-zA-Z]+$/]

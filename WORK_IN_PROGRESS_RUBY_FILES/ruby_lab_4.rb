@@ -42,19 +42,7 @@ def process_file(file_name)
 			# the cleaned up string will be stored in the title variable
 			# title = cleanup_title(line)
 			title = cleanup_title(line)
-            
-            '
-			test_word = "computer"
-			if title != nil && title != ""
-				if title.match("#{test_word}")
-					puts "==========================="
-					puts "#{title}: #{test_word}"
-					puts "==========================="
-				end
-            end
-            '
-			
-			
+
 			if title != nil && title != ""
 				buildBigram(title)
                 createWordsList(title)
@@ -81,12 +69,11 @@ def process_file(file_name)
         puts "=======================================\n\n"
         
 		#countWords()
-
 		#printWords()
-		printBigram()
+		#printBigram()
 		#printTitles()
 
-		#mcw("computer")
+		mcw("love")
 
 
 	rescue
@@ -238,35 +225,72 @@ end
 
 def mcw(some_word)
 
+	tmp_hash = Hash.new
+
 	counter = 0
-	some_word_index = 0
-	tmp_str = ""
+	followed = ""
 
 	$bigrams.each do |key, array|
 		if ( array.match("#{some_word}") )
-			tmp_array = array.split(/[\:\,]/)
-			#puts tmp_array
-			#puts "\n"
-			for word in tmp_array
-				if some_word.match("#{word}")
-					some_word_index = counter
 
-					if counter != 0 && counter <= tmp_array.length
-						tmp_str += tmp_array[counter - 1]
-						tmp_str += ":#{some_word}\n"
+			tmp_array = array.split(/[\:\,]/)
+			for word in tmp_array
+
+				if some_word == word
+
+					if counter < tmp_array.length
+
+						if tmp_array[counter - 1] != "" && tmp_array[counter - 1] != nil
+							if tmp_array[counter - 1] != some_word
+
+								followed = tmp_array[counter - 1]
+								#tmp_hash["#{followed}"] = 0
+								puts "word: [#{some_word}] following: [#{followed}]"
+
+								$words.each do |key_1, array_1|
+									if ( key_1 == followed )
+										$words["#{key_1}"] += 1
+									end
+								end
+
+							end
+						end
+
 					end
+
 				end
 				counter += 1
-			end
 
-			puts tmp_str
-			#puts "************************************"
+			end
 			counter = 0
-            some_word_index = 0
-            
+
 		end
-		tmp_str = ""
 	end
+
+	'
+	val_1 = -1
+	val_2 = -2
+	$words.keys.each_with_index do |key, index|
+		val_1 = $words["#{key}"]
+		if val_1 > 0
+			if val_2 < val_1
+				val_2 = val_1
+			end
+		end
+		val_1 = -1
+	end
+	
+	$words.each do |key, array|
+		if $words["#{key}"] > 0
+			puts "key: [#{key}] ----- val: #{array}"
+		end
+	end
+	
+	puts "val_2: #{val_2}"
+	followed = $words.key(val_2)
+	puts "[#{val_2}] TEST: [#{followed}]"
+	'
+	
 end
 
 def countWords()

@@ -73,7 +73,7 @@ def process_file(file_name)
 		#printBigram()
 		#printTitles()
 
-		#mcw("computer")
+		mcw("love")
 
 
 	rescue
@@ -225,35 +225,42 @@ end
 
 def mcw(some_word)
 
+	tmp_hash = Hash.new
+
 	counter = 0
-	some_word_index = 0
-	tmp_str = ""
+	followed = ""
 
 	$bigrams.each do |key, array|
 		if ( array.match("#{some_word}") )
-			tmp_array = array.split(/[\:\,]/)
-			#puts tmp_array
-			#puts "\n"
-			for word in tmp_array
-				if some_word.match("#{word}")
-					some_word_index = counter
 
-					if counter != 0 && counter <= tmp_array.length
-						tmp_str += tmp_array[counter - 1]
-						tmp_str += ":#{some_word}\n"
+			tmp_array = array.split(/[\:\,]/)
+			for word in tmp_array
+
+				if some_word == word
+
+					if counter < tmp_array.length
+
+						if tmp_array[counter - 1] != "" && tmp_array[counter - 1] != nil
+							if tmp_array[counter - 1] != some_word
+
+								followed = tmp_array[counter - 1]
+								#tmp_hash["#{followed}"] = 0
+								puts "word: [#{some_word}] following: [#{followed}]"
+
+							end
+						end
+
 					end
+
 				end
 				counter += 1
-			end
 
-			puts tmp_str
-			#puts "************************************"
+			end
 			counter = 0
-            some_word_index = 0
-            
+
 		end
-		tmp_str = ""
 	end
+
 end
 
 def countWords()
