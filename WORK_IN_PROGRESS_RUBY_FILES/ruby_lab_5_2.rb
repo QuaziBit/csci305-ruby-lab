@@ -40,21 +40,7 @@ def process_file(file_name)
 			# the cleanup_title method will return cleaned up string
 			# the cleaned up string will be stored in the title variable
 			# title = cleanup_title(line)
-
-			if line != nil
-
-				begin
-
-					title = cleanup_title(line)
-				  
-				rescue => e
-					puts "[0]"
-					puts "Exception Class: #{ e.class.name }"
-					puts "Exception Message: #{ e.message }"
-					puts "Exception Backtrace: #{ e.backtrace }"
-				end
-
-			end
+			title = cleanup_title(line)
 
             # Build bigram data structure 
             # ====================================================== #
@@ -88,21 +74,25 @@ def process_file(file_name)
         puts "Printing Bigram data..."
         puts "=================================================="
         printBigram()
-		puts "==================================================\n"
-		'
+        puts "==================================================\n"
+        '
         # ====================================================== #
 
         # TEST: now --> happy ::: love --> sad ::: song --> love
 		mcw("happy")
 		mcw("sad")
 		mcw("love")
-		#mcw("computer")
+		mcw("computer")
 
-	rescue => e
-		puts "[1]"
-		puts "Exception Class: #{ e.class.name }"
-		puts "Exception Message: #{ e.message }"
-		puts "Exception Backtrace: #{ e.backtrace }"
+	
+		#rescue SystemCallError
+		#	$stderr.print "IO failed: " + $!
+		#	opFile.close
+		#	#File.delete(opName)
+		#	raise
+		#end
+	
+	rescue
 		STDERR.puts "Could not open file"
 		exit 4
 	end
@@ -121,6 +111,16 @@ def cleanup_title(line)
 	# the tmp_4 war should contain title string
 	tmp_array = line.chomp.split(/>/)
 	tmp_line = tmp_array[tmp_array.length - 1]
+    # ====================================================== #
+	puts "tmp_line: #{tmp_line}"
+	# ====================================================== #
+	# make the first letter of the string uppercase
+
+	str_up = tmp_line
+	#puts "str_up: #{str_up}"
+	str_up[0] = str_up[0].upcase
+	#puts "str_up: #{str_up}"
+
 	# ====================================================== #
 
 	if tmp_line != nil && tmp_line != ""
@@ -129,84 +129,30 @@ def cleanup_title(line)
 		# splitting up the title_tmp further
 		# after splitting the first part of the title_tmp string should give back title
 		# and the rest what left is the garbage string
-		title_tmp_2, garbage = tmp_line.chomp.split(/[\/\(\)\[\]\:\_\-\+\=\*\@\!\?]/)
-
-		# remove number from title
-		title_tmp_2 = title_tmp_2
-		begin
-
-			if title_tmp_2.match(/[0-9]/)
-				title_tmp_2 = title_tmp_2.gsub(/[0-9]/,'')
-			end
-		  
-		rescue => e
-			puts "[3]: Exception [remove number from title]"
-			'
-			puts "Exception Class: #{ e.class.name }"
-			puts "Exception Message: #{ e.message }"
-			puts "Exception Backtrace: #{ e.backtrace }"
-			'
-		end
-
-		# remove spaces in beginning of title
-		title_tmp_2 = title_tmp_2
-		begin
-
-			#title_tmp_2 = title_tmp_2.gsub(/^\s/,'')
-			if title_tmp_2.match(/^\s/)
-				title_tmp_2 = title_tmp_2.gsub(/^\s/,'')
-			end
-		  
-		rescue => e
-			puts "[4]: Exception [remove spaces in beginning of title]"
-			'
-			puts "Exception Class: #{ e.class.name }"
-			puts "Exception Message: #{ e.message }"
-			puts "Exception Backtrace: #{ e.backtrace }"
-			'
-		end
-
+		title_tmp_2, garbage = tmp_line.chomp.split(/[\/\(\)\[\]\:\_\-\+\=\*\@\!\?[0-9]]/)
 
 		# ====================================================== #
-
-		if title_tmp_2 != nil && title_tmp_2 != ""
-
-			# ====================================================== #
-			# Replace spaces within an empty char
-
-			str_no_sp = title_tmp_2.gsub(/\s/,'')
-			str_no_sp = str_no_sp.gsub(/\./,'')
-			str_no_sp = str_no_sp.gsub(/\'/,'')
-			str_no_sp = str_no_sp.gsub(/\"/,'')
-			str_no_sp = str_no_sp.gsub(/\`/,'')
-				
-			# check if title matches the regular expression
-			reg_str = str_no_sp[/[a-zA-Z]+$/]
-			is_equal = str_no_sp == reg_str # true or false
-			# ====================================================== #
-				
-			if is_equal == true
-
-				begin
-
-					title = title_tmp_2.downcase!
-					#title = title.gsub(/\s+$/,'') # remove space at the end of string caused ERROR
-					#title = title.gsub(/\.$/,'') # remove dot at the end of string caused ERROR
-					#puts "title: [#{title}]" # test
-					$counter_1 += 1
-				  
-				rescue => e
-					puts "[END]"
-					puts "Exception Class: #{ e.class.name }"
-					puts "Exception Message: #{ e.message }"
-					puts "Exception Backtrace: #{ e.backtrace }"
-				end
-
-
-			end
-			# ====================================================== #
-
+		# Replace spaces within an empty char
+		str_no_sp = title_tmp_2.gsub(/\s/,'')
+		str_no_sp = str_no_sp.gsub(/\./,'')
+		str_no_sp = str_no_sp.gsub(/\'/,'')
+		str_no_sp = str_no_sp.gsub(/\"/,'')
+		str_no_sp = str_no_sp.gsub(/\`/,'')
+			
+		# check if title matches the regular expression
+		reg_str = str_no_sp[/[a-zA-Z]+$/]
+		is_equal = str_no_sp == reg_str # true or false
+		# ====================================================== #
+			
+		if is_equal == true
+			if title_tmp_2 != ""
+				$counter_1 += 1
+				title = title_tmp_2.downcase!.gsub(/\s+$/,'')
+				title = title.gsub(/\.$/,'')
+			end	
 		end
+		# ====================================================== #
+
 
 	end
 
@@ -294,19 +240,18 @@ def mcw(some_word)
 
 					if counter < tmp_array.length
 
-						# get word that is 
 						if tmp_array[counter + 1] != "" && tmp_array[counter + 1] != nil
 							if tmp_array[counter + 1] != some_word
 
 								followed = tmp_array[counter + 1]
                                 tmp_hash[followed] = 0
-								words_list.push(followed)
+                                words_list.push(followed)
 
 							end
                         end
 
 					end
-					
+
 				end
 				counter += 1
 
@@ -352,12 +297,7 @@ end
 
 def printBigram()
     $bigrams.each do |key, array|
-		puts "key: [#{key}] ----- val: #{array}"
-		'
-		if array.match("computer")
-			puts "\t\tkey: [#{key}] ----- val: #{array}"
-		end
-		'
+        puts "key: [#{key}] ----- val: #{array}"
 	end
 end
 
