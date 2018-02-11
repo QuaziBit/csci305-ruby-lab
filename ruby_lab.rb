@@ -292,7 +292,7 @@ def mcw(some_word)
 
 					if counter < tmp_array.length
 
-						# get word that is 
+						# get the word that is following the [some_word]
 						if tmp_array[counter + 1] != "" && tmp_array[counter + 1] != nil
 							if tmp_array[counter + 1] != some_word
 
@@ -378,7 +378,7 @@ def build_title(word)
 
 	str = word
 	
-	# recursive call of mcw()
+	# recursive call
 	if $i <= 21
 		$new_title += "#{str} "
 		$i += 1
