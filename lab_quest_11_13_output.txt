@@ -1,0 +1,40 @@
+FFF
+
+Failures:
+
+  1) Lab Questions Check unique_tracks with stop words removed 11. Song title starting with 'amore'
+     Failure/Error: expect(create_title('amore').rstrip()).to eq('amore mio babbino caro gianni schicchi')
+
+       expected: "amore mio babbino caro gianni schicchi"
+            got: "amore mio babbino caro from the world is a little girl in the world is a little girl in the world"
+
+       (compared using ==)
+     # ./spec/lab_quest_11_13_spec.rb:8:in `block (3 levels) in <top (required)>'
+
+  2) Lab Questions Check unique_tracks with stop words removed 12. Song title starting with 'love'
+     Failure/Error: expect(create_title('love').rstrip()).to eq('love you are you are you are you are you are you are you are you are you are you')
+
+       expected: "love you are you are you are you are you are you are you are you are you are you"
+            got: "love you are you are you are you are you are you are you are you are you are you are"
+
+       (compared using ==)
+     # ./spec/lab_quest_11_13_spec.rb:12:in `block (3 levels) in <top (required)>'
+
+  3) Lab Questions Check unique_tracks with stop words removed 13. Song title starting with 'little'
+     Failure/Error: expect(create_title('little').rstrip()).to eq('little girl like you are you are you are you are you are you are you are you are you')
+
+       expected: "little girl like you are you are you are you are you are you are you are you are you"
+            got: "little girl in the world is a little girl in the world is a little girl in the world is a"
+
+       (compared using ==)
+     # ./spec/lab_quest_11_13_spec.rb:16:in `block (3 levels) in <top (required)>'
+
+Finished in 23 minutes 50 seconds (files took 34.83 seconds to load)
+3 examples, 3 failures
+
+Failed examples:
+
+rspec ./spec/lab_quest_11_13_spec.rb:7 # Lab Questions Check unique_tracks with stop words removed 11. Song title starting with 'amore'
+rspec ./spec/lab_quest_11_13_spec.rb:11 # Lab Questions Check unique_tracks with stop words removed 12. Song title starting with 'love'
+rspec ./spec/lab_quest_11_13_spec.rb:15 # Lab Questions Check unique_tracks with stop words removed 13. Song title starting with 'little'
+

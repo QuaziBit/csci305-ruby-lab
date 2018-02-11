@@ -39,6 +39,24 @@ def process_file(file_name)
 	
 	begin
 
+		if RUBY_PLATFORM.downcase.include? 'mswin'
+			file = File.open(file_name)
+			unless file.eof?
+				file.each_line do |line|
+					# do something for each line (if using windows)
+					try_cleanup_title(line)
+				end
+			end
+			file.close
+		else
+			IO.foreach(file_name, encoding: "utf-8") do |line|
+				# do something for each line (if using macos or linux)
+				try_cleanup_title(line)
+			end
+		end
+		puts "Finished. Bigram model built.\n"
+		
+		'
 		IO.foreach(file_name) do |line|
 
 			# ====================================================== #
@@ -47,8 +65,9 @@ def process_file(file_name)
             # ====================================================== #
 			
 		end
-		
 		puts "Finished. Bigram model built.\n"
+		'
+		
 		
 		print_time()
 		print_extra_info()
@@ -117,7 +136,6 @@ def cleanup_title(line)
 		title_tmp_2, garbage = tmp_line.chomp.split(/[\/\(\)\[\]\:\_\-\+\=\*\@\!\?]/)
 
 		# remove numbers from title
-		title_tmp_2 = title_tmp_2
 		begin
 
 			if title_tmp_2.match(/[0-9]/)
@@ -134,7 +152,6 @@ def cleanup_title(line)
 		end
 
 		# remove spaces in beginning of title
-		title_tmp_2 = title_tmp_2
 		begin
 
 			#title_tmp_2 = title_tmp_2.gsub(/^\s/,'')
