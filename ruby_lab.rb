@@ -21,82 +21,37 @@ $counter_2 = 0
 $bigram_counter = 0
 $bigrams = Hash.new
 
+$new_title = ""
+
+$t_1 = nil
+$t_2 = nil
+
 # function to process each line of a file and extract the song titles
 def process_file(file_name)
 
-	# local variables declaration
-
 	# start time of this program
-    t_1 = Time.now
-    
+    $t_1 = Time.now
+	
+	# local variables declaration
     title = ""
 
 	puts "Processing File.... "
 	
 	begin
+
 		IO.foreach(file_name) do |line|
+
+			# ====================================================== #
 			# do something for each line
-			# call the cleanup_title method and pass the line
-			# the cleanup_title method will return cleaned up string
-			# the cleaned up string will be stored in the title variable
-			# title = cleanup_title(line)
-
-			if line != nil
-
-				begin
-
-					title = cleanup_title(line)
-				  
-				rescue => e
-					puts "[0]"
-					puts "Exception Class: #{ e.class.name }"
-					puts "Exception Message: #{ e.message }"
-					puts "Exception Backtrace: #{ e.backtrace }"
-				end
-
-			end
-
-            # Build bigram data structure 
-            # ====================================================== #
-			if title != nil && title != ""
-				buildBigram(title)
-            end
+			try_cleanup_title(line)
             # ====================================================== #
 			
 		end
-
+		
 		puts "Finished. Bigram model built.\n"
-
-        # ====================================================== #
-        # print total amount of titles
-        puts "\n======================================="
-		puts "Total number of Titels: #{$counter_1}\n"
-
-		# end time of this program
-		t_2 = Time.now
-
-		# calculate time needed for computing
-		t_3 = t_2 - t_1
-
-		# print computing time
-        puts "Computing Time: #{t_3}"
-        puts "=======================================\n\n"
-        # ====================================================== #
-        
-        # ====================================================== #
-        '
-        puts "Printing Bigram data..."
-        puts "=================================================="
-        printBigram()
-		puts "==================================================\n"
-		'
-        # ====================================================== #
-
-        # TEST: now --> happy ::: love --> sad ::: song --> love
-		mcw("happy")
-		mcw("sad")
-		mcw("love")
-		#mcw("computer")
+		
+		print_time()
+		#print_extra_info()
 
 	rescue => e
 		puts "[1]"
@@ -107,6 +62,36 @@ def process_file(file_name)
 		exit 4
 	end
 	
+end
+
+def try_cleanup_title(line)
+
+	# ====================================================== #
+	# call the cleanup_title method and pass the line
+	# the cleanup_title method will return cleaned up string
+	# the cleaned up string will be stored in the title variable
+	# title = cleanup_title(line)
+	if line != nil
+
+		begin
+			title = cleanup_title(line)
+		rescue => e
+			puts "[0]"
+			puts "Exception Class: #{ e.class.name }"
+			puts "Exception Message: #{ e.message }"
+			puts "Exception Backtrace: #{ e.backtrace }"
+		end
+
+	end
+	# ====================================================== #
+
+	# Build bigram data structure 
+	# ====================================================== #
+	if title != nil && title != ""
+		buildBigram(title)
+	end
+	# ====================================================== #
+
 end
 
 # takes a single string and returns a cleaned up string
@@ -131,7 +116,7 @@ def cleanup_title(line)
 		# and the rest what left is the garbage string
 		title_tmp_2, garbage = tmp_line.chomp.split(/[\/\(\)\[\]\:\_\-\+\=\*\@\!\?]/)
 
-		# remove number from title
+		# remove numbers from title
 		title_tmp_2 = title_tmp_2
 		begin
 
@@ -173,7 +158,6 @@ def cleanup_title(line)
 
 			# ====================================================== #
 			# Replace spaces within an empty char
-
 			str_no_sp = title_tmp_2.gsub(/\s/,'')
 			str_no_sp = str_no_sp.gsub(/\./,'')
 			str_no_sp = str_no_sp.gsub(/\'/,'')
@@ -188,20 +172,17 @@ def cleanup_title(line)
 			if is_equal == true
 
 				begin
-
 					title = title_tmp_2.downcase!
 					#title = title.gsub(/\s+$/,'') # remove space at the end of string caused ERROR
 					#title = title.gsub(/\.$/,'') # remove dot at the end of string caused ERROR
 					#puts "title: [#{title}]" # test
 					$counter_1 += 1
-				  
 				rescue => e
 					puts "[END]"
 					puts "Exception Class: #{ e.class.name }"
 					puts "Exception Message: #{ e.message }"
 					puts "Exception Backtrace: #{ e.backtrace }"
 				end
-
 
 			end
 			# ====================================================== #
@@ -326,8 +307,10 @@ def mcw(some_word)
                 tmp_hash["#{key}"] += 1
             end
         end
-    end
+	end
+	 # ====================================================== #
 
+	# ====================================================== #
     # find the most common word by its [int] value
     val_1 = -1
 	val_2 = -2
@@ -340,13 +323,96 @@ def mcw(some_word)
 		end
 		val_1 = -1
 	end
+    followed = tmp_hash.key(val_2)
+	# ====================================================== #
 
     # show result
-    followed = tmp_hash.key(val_2)
-    puts "word: [#{followed}] followed the word: [#{some_word}] [#{val_2}] times"
+    #puts "word: [#{followed}] followed the word: [#{some_word}] [#{val_2}] times"
     # ====================================================== #
-    
+	
     return followed
+
+end
+
+def create_title(word)
+
+	# reset $new_title
+	$new_title = ""
+	build_title(word)
+
+	str = ""
+	str = $new_title.gsub(/\s+$/,'')
+
+	return str
+
+end
+
+$i = 1
+$showWord = true
+def build_title(word)
+	
+	if $showWord
+		puts "Working on [#{word}]"
+		$showWord = false
+	else
+		puts "Working... "
+	end
+	STDOUT.flush
+
+	str = word
+	
+	# recursive call of mcw()
+	if $i <= 21
+		$new_title += "#{str} "
+		$i += 1
+		str =  build_title( mcw(str) )
+	end
+	$i = 1
+	$showWord = true
+
+end
+
+'
+def stst(input)
+	puts "\nYou entered [#{input}]"
+	STDOUT.flush	
+
+	str = "#{input} "
+	str += mcw(input)
+
+	$new_title += "#{str} "
+end
+'
+
+def user_input()
+
+	exit_loop = false
+
+	input = ""
+
+	while !exit_loop
+
+		if $new_title != ""
+			puts "\nNew title: [#{$new_title}]\n"
+			STDOUT.flush
+			$new_title = ""
+		end
+
+		print "\nEnter a word [Enter 'q' to quit]: "
+		STDOUT.flush
+
+		input = STDIN.gets.chomp
+
+		if input == "q"
+			exit_loop = true
+			break
+		else		
+			#stst(input)
+			#build_title(input)
+			create_title(input)
+			exit_loop = false
+		end
+	end
 
 end
 
@@ -359,6 +425,56 @@ def printBigram()
 		end
 		'
 	end
+end
+
+def print_time()
+    # ====================================================== #
+    # print total amount of titles
+    puts "\n======================================="
+	puts "Total number of Titels: #{$counter_1}\n"
+
+	# end time of this program
+	$t_2 = Time.now
+
+	# calculate time needed for computing
+	t_3 = $t_2 - $t_1
+
+	# print computing time
+    puts "Computing Time: #{t_3}"
+    puts "=======================================\n\n"
+	# ====================================================== #
+	
+end
+
+def print_extra_info()
+        # ====================================================== #
+        '
+        puts "Printing Bigram data..."
+        puts "=================================================="
+        printBigram()
+		puts "==================================================\n"
+		'
+        # ====================================================== #
+
+		# ====================================================== #
+		# TEST: now --> happy ::: love --> sad ::: song --> love
+		puts "# ====================================================== #"
+		mcw("happy")
+		mcw("sad")
+		mcw("love")
+		mcw("computer")
+		puts "# ====================================================== #\n\n"
+
+		#create_title("happy")
+		#puts $new_title
+		#create_title("sad")
+		#puts $new_title
+		#create_title("hey")
+		#puts $new_title
+		#create_title("little")
+		#puts $new_title
+		# ====================================================== #
+
 end
 
 # Executes the program
@@ -374,6 +490,7 @@ def main_loop()
 	process_file(ARGV[0])
 
 	# Get user input
+	user_input()
 end
 
 if __FILE__==$0

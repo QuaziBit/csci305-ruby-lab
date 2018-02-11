@@ -1,0 +1,26 @@
+...FF
+
+Failures:
+
+  1) Bigram Counting Self Check Only A Named titles 80 distinct words follow 'love'
+     Failure/Error: expect($bigrams['love'].length).to eq(80)
+
+     NoMethodError:
+       undefined method `length' for nil:NilClass
+     # ./spec/self_check_2_spec.rb:20:in `block (3 levels) in <top (required)>'
+
+  2) Bigram Counting Self Check Only A Named titles 'song' follows 'love' 33 times
+     Failure/Error: expect($bigrams['love']['song']).to eq(33)
+
+     NoMethodError:
+       undefined method `[]' for nil:NilClass
+     # ./spec/self_check_2_spec.rb:24:in `block (3 levels) in <top (required)>'
+
+Finished in 0.25732 seconds (files took 1.07 seconds to load)
+5 examples, 2 failures
+
+Failed examples:
+
+rspec ./spec/self_check_2_spec.rb:19 # Bigram Counting Self Check Only A Named titles 80 distinct words follow 'love'
+rspec ./spec/self_check_2_spec.rb:23 # Bigram Counting Self Check Only A Named titles 'song' follows 'love' 33 times
+
