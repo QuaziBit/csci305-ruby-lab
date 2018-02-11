@@ -51,7 +51,7 @@ def process_file(file_name)
 		puts "Finished. Bigram model built.\n"
 		
 		print_time()
-		#print_extra_info()
+		print_extra_info()
 
 	rescue => e
 		puts "[1]"
@@ -327,7 +327,7 @@ def mcw(some_word)
 	# ====================================================== #
 
     # show result
-    #puts "word: [#{followed}] followed the word: [#{some_word}] [#{val_2}] times"
+    puts "word: [#{followed}] followed the word: [#{some_word}] [#{val_2}] times"
     # ====================================================== #
 	
     return followed
