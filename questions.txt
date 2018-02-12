@@ -1,24 +1,68 @@
-Your name
+Olexandr Matveyev
 CSCI-305
 
 10.
+Start word [angel] --> "angel of the world is a little girl in the world is a little girl in the world is"
+Start word [dog] --> "dog blues for the world is a little girl in the world is a little girl in the world is a"
+Start word [frankenstein] --> "frankenstein love you are you are you are you are you are you are you are you are you are you"
 
 14.
+Because lots or most of similar words follows each other, at least in the English language.
+Example:
+Working on [love]
+	 word: [song] followed the word: [love] [33] times
+	 word: [for] followed the word: [song] [98] times
+	 word: [you] followed the word: [for] [133] times
+	 word: [ready] followed the word: [you] [126] times
+	 word: [for] followed the word: [ready] [26] times
+	 word: [you] followed the word: [for] [133] times
+	 word: [ready] followed the word: [you] [126] times
+	 word: [for] followed the word: [ready] [26] times
+	 word: [you] followed the word: [for] [133] times
+	 word: [ready] followed the word: [you] [126] times
+	 word: [for] followed the word: [ready] [26] times
+	 word: [you] followed the word: [for] [133] times
+	 word: [ready] followed the word: [you] [126] times
+	 word: [for] followed the word: [ready] [26] times
+	 word: [you] followed the word: [for] [133] times.
+	 word: [ready] followed the word: [you] [126] times
+	 word: [for] followed the word: [ready] [26] times
+	 word: [you] followed the word: [for] [133] times
+	 word: [ready] followed the word: [you] [126] times
+	 word: [for] followed the word: [ready] [26] times
+	 word: [you] followed the word: [for] [133] times
+
 
 15.
+No. Answer is in the question 14.
 
 16.
+I do not have extension, I did not fix repeating phrase/word problem.
 
 19.
+bob marley vs. the world is a little girl in the world is a little girl in the world is a
+I got same title every time. I guess it it because my regex is wrong.
 
 20.
+happy birthday song for the world is a little girl in the world is a little girl in the world
 
 21.
+Unfortunately I cannot say that I liked something in the Ruby programming language, 
+I have to spend more time to understand its pros and cons.
 
 22.
+I don't like Ruby syntax, I guess I am too used to Java syntax to much. 
+
+In my opinion the programming language is just a tool, and I cannot say that 
+I completely hate this language or absolutely love it. 
+Maybe if I spend more time with Ruby I will find it useful.
 
 23.
+I did like this lab because it teach me how to solve some problems in programming.
 
 24.
+15 to 20 hours.
 
 25.
+Right now I cannot answer on this question. I have to learn Ruby to understand 
+for what programming projects I would used it.
